@@ -1,0 +1,23 @@
+kind: pipeline
+type: kubernetes
+name: dmellis-WebBase
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: build
+    image: plugins/docker
+    settings:
+      repo: docker.dmellis.com/dmellis/webserve
+      registry: docker.dmellis.com
+      dockerfile: ./Dockerfile
+      tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
+      username:
+        from_secret: dmellis-WebServe_username
+      password: 
+        from_secret: dmellis-WebServe_password
+trigger:
+  branch:
+    - master
